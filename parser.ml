@@ -1,6 +1,29 @@
-(* This is a parser combinator library
- *
- * Author: Nashe Mncube/TuringDisciple *)
+(*
+          _____                    _____                    _____
+         /\    \                  /\    \                  /\    \
+        /::\    \                /::\____\                /::\    \
+       /::::\    \              /:::/    /               /::::\    \
+      /::::::\    \            /:::/    /               /::::::\    \
+     /:::/\:::\    \          /:::/    /               /:::/\:::\    \
+    /:::/__\:::\    \        /:::/    /               /:::/__\:::\    \
+   /::::\   \:::\    \      /:::/    /                \:::\   \:::\    \
+  /::::::\   \:::\    \    /:::/    /      _____    ___\:::\   \:::\    \
+ /:::/\:::\   \:::\ ___\  /:::/____/      /\    \  /\   \:::\   \:::\    \
+/:::/__\:::\   \:::|    ||:::|    /      /::\____\/::\   \:::\   \:::\____\
+\:::\   \:::\  /:::|____||:::|____\     /:::/    /\:::\   \:::\   \::/    /
+ \:::\   \:::\/:::/    /  \:::\    \   /:::/    /  \:::\   \:::\   \/____/
+  \:::\   \::::::/    /    \:::\    \ /:::/    /    \:::\   \:::\    \
+   \:::\   \::::/    /      \:::\    /:::/    /      \:::\   \:::\____\
+    \:::\  /:::/    /        \:::\__/:::/    /        \:::\  /:::/    /
+     \:::\/:::/    /          \::::::::/    /          \:::\/:::/    /
+      \::::::/    /            \::::::/    /            \::::::/    /
+       \::::/    /              \::::/    /              \::::/    /
+        \::/____/                \::/____/                \::/    /
+         ~~                       ~~                       \/____/
+
+ *                         A parser library
+ *               Author:Nashe Mncube/TuringDisciple
+ *)
 
 (* Useful types *)
 type 'a maybe  = Nothing | Just of 'a
@@ -57,6 +80,7 @@ let (<|) f v   = f v
 (* val flip  : ('a -> 'b -> 'c ) -> 'b -> 'a -> 'c *)
 let flip f x y = f y x
 
+(* val (+:)  : 'a  -> 'a list -> 'a list *)
 let (+:) x l = x :: l
 
 (* Functor
@@ -68,12 +92,11 @@ module type Functor = sig
    val (<$)  :         'a   -> 'b f -> 'a f
 end
 
-module MaybeFunctor : Functor with type 'a f  = 'a maybe = struct
-   type 'a f = 'a maybe
+module MaybeFunctor : ( Functor with type 'a f  := 'a maybe ) = struct
    let fmap g mx =
       match mx with
       | Nothing -> Nothing
-      | Just x  -> Just ( g x )
+      | Just x  -> Just( g <|x )
    let (<$>) = fmap
    let (<$) a mx  =
       match mx with
@@ -81,13 +104,12 @@ module MaybeFunctor : Functor with type 'a f  = 'a maybe = struct
       | _       -> Just a
 end
 
-module ParserFunctor : Functor with type 'a f = 'a parser = struct
-   type 'a f = 'a parser
+module ParserFunctor : ( Functor with type 'a f := 'a parser ) = struct
    let fmap g = function
       Parser px -> Parser( fun s ->
          List.map
-            ( fun pair -> let (ts, x) = pair in (ts, g x) )
-            ( px s ) )
+            ( fun pair -> let (ts, x) = pair in (ts, g <|x) )
+            ( px <|s ) )
    let (<$>) = fmap
    (* Derived combi  *)
    let (<$) a = function
@@ -106,17 +128,17 @@ module type Applicative = sig
    val (<:>):       'a f     -> ( 'a list ) f -> ( 'a list ) f
 end
 
-module ParserApp : ( Applicative with type 'a f = 'a parser ) = struct
+module ParserApp : ( Applicative with type 'a f := 'a parser ) = struct
    include ParserFunctor
    let pure x      = Parser(fun s -> [ (s, x) ])
    let (<*>) ( Parser pf ) ( Parser px ) =
       Parser( fun s ->
-         List.flatten <| List.map
+         List.flatten <|List.map
             ( fun pair -> let (ss, fs) = pair in
                   List.map
-                     ( fun pair_ -> let (sss, x ) = pair_ in (sss, ( fs x )) )
-                     ( px ss ) )
-            ( pf s ) )
+                     ( fun pair_ -> let (sss, x ) = pair_ in (sss, fs <|x) )
+                     ( px <|ss ))
+            ( pf <|s ))
    (* Derived combi *)
    let (<*<) px py = const <$> px <*> py
    let (>*>) px py = id <$ px <*> py
@@ -127,7 +149,6 @@ end
  * Alternative gives us choices between parsers via <|> *)
 module type Alternative = sig
    type 'a f
-   (* include Functor with type 'a f := 'a f *)
    include Applicative with type 'a f := 'a f
    val empty : 'a f
    val (<|>) : 'a f -> 'a f -> 'a f
@@ -137,10 +158,9 @@ end
 
 module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
    include ParserApp
-   (* include ParserFunctor *)
    let empty = Parser( fun _ -> [] )
    let (<|>) ( Parser px ) ( Parser py ) =
-      Parser( fun s -> List.append ( px s ) ( py s ) )
+      Parser( fun s -> List.append ( px <|s ) ( py <|s ) )
 
    (* Derived combi *)
    let rec some px = px <:> some px <|> empty
@@ -159,13 +179,13 @@ end
 
 module ParserMonad : ( Monad with type 'a f := 'a parser)  = struct
    include ParserAlt
-   let return x = pure x
+   let return = pure
    let (>>=) ( Parser px ) f =
       Parser( fun s ->
-         List.flatten <| List.map
+         List.flatten <|List.map
             ( fun p -> let (ss, x) = p in
-               match ( f x ) with Parser px -> ( px ss ))
-            ( px s ) )
+               match f <|x with Parser px -> px <|ss)
+            ( px <|s ) )
 end
 
 (* Parsing functions *)
