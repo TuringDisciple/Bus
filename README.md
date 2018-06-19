@@ -21,8 +21,8 @@
                        \::/____/                \::/____/                \::/    /
                         ~~                       ~~                       \/____/
 
-                                   A parser library
-                         Author:Nashe Mncube/TuringDisciple
+                                         A parser library
+                               Author:Nashe Mncube/TuringDisciple
 
  ### BUS is a fully functional parser combinator library written in a OCAML
 
