@@ -1,0 +1,10 @@
+lib: [
+  "_build/install/default/lib/ocaml-parse/META" {"META"}
+  "_build/install/default/lib/ocaml-parse/opam" {"opam"}
+]
+bin: [
+  "_build/install/default/bin/Bus" {"Bus"}
+]
+doc: [
+  "_build/install/default/doc/ocaml-parse/README.md"
+]

@@ -1,0 +1,5 @@
+(jbuild_version 1)
+
+(library
+  ((name lib)                 ; The name of your entry file, minus the .ml
+   (libraries ())))         ; Express a dependency on the "lib" module

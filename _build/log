@@ -1,0 +1,10 @@
+# jbuilder build
+# OCAMLPARAM: unset
+$ /usr/local/bin/ocamlc.opt -config > /var/folders/c5/m3zgp8_s4_s151ffj9tj9ddw0000gn/T/jbuild78d077.output
+$ (cd _build/default && /usr/local/bin/ocamldep.opt -modules -impl bin/combinators.ml) > _build/default/bin/combinators.ml.d
+$ (cd _build/default && /usr/local/bin/ocamldep.opt -modules -impl bin/parser.ml) > _build/default/bin/parser.ml.d
+$ (cd _build/default && /usr/local/bin/ocamldep.opt -modules -intf bin/parser.mli) > _build/default/bin/parser.mli.d
+$ (cd _build/default && /usr/local/bin/ocamlc.opt -w -40 -g -bin-annot -I bin/.combinators.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.combinators.eobjs/parser.cmi -c -intf bin/parser.mli)
+$ (cd _build/default && /usr/local/bin/ocamlopt.opt -w -40 -g -I bin/.combinators.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.combinators.eobjs/parser.cmx -c -impl bin/parser.ml)
+$ (cd _build/default && /usr/local/bin/ocamlopt.opt -w -40 -g -I bin/.combinators.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.combinators.eobjs/combinators.cmx -c -impl bin/combinators.ml)
+$ (cd _build/default && /usr/local/bin/ocamlopt.opt -w -40 -g -o bin/combinators.exe -I lib lib/lib.cmxa bin/.combinators.eobjs/parser.cmx bin/.combinators.eobjs/combinators.cmx)
