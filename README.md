@@ -30,13 +30,13 @@ BUS is a fully functional parser combinator library written in a Ocaml. It exist
 ### How does it work?
 The best way to illustrate how this library works is via an example. Suppose that I define a simple language as such which describes a simple language consisting of expressions which can be added, and subtracted.
 
-      <expr> := <num> ( ("+"|"-") <num> )*
+      <expr> := ("+"|"-") <num> ( ("+"|"-") <num> )*
       <num>  := ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")+
 
 For those not familiar with [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form), this is a way of representing context-free grammars. ***<expr>*** terms are mad of one ***<num>*** term or string of ***<num>*** terms separated by plus and minus terms. Each ***<num>*** term is simply a string of one or more digits.
-So for example ***"1", "1+2", "42-32"*** are all strings within the grammar but strings such as ***-100, +5, 2-4+*** are not.
+So for example ***"1", "1+2", "42-32"*** are all strings within the grammar but strings such as ***100++, --5, 2-4+*** are not.
 
-So what would a parser for this language look like? Well first we would define a data structure that corresponds to our grammars description
+So what would a parser for this language look like? Well first we would define a data structure that corresponds to our grammars description. This may seem pointless as we could just parse the input on the fly, but it makes our lives easier as will be seen.
 
-      type num  = 
-      type expr = Num of num |  
+      type num  = Num of int
+      type expr = Expr of   
