@@ -1,3 +1,3 @@
-B ../_build/default/lib/.lib.objs
+B ../../_build/default/ocaml-parse/lib/.lib.objs
 FLG -open Lib -w -40
 S .

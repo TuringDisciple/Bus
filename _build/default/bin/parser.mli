@@ -50,7 +50,7 @@ module type Applicative = sig
    val (<*<):       'a f     -> 'b f -> 'a f
    val (>*>):       'a f     -> 'b f -> 'b f
    val (<:>):       'a f     -> 'a list f -> 'a list f
-   val (<+>):        string f -> string f -> string f (* Not in applicative but useful *)
+   val (<+>):       string f -> string f  -> string f (* Not in applicative but useful *)
 end
 
 module ParserApp : sig
