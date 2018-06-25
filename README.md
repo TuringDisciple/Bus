@@ -25,12 +25,12 @@
                                      Author:Nashe Mncube/TuringDisciple
 
 ### Introduction
-BUS is a fully functional parser combinator library written in a Ocaml. It exists not to replace current parser libraries, but rather to act as a toy parser library for the curious and learning. Relatively small, bus uses advanced concepts in functional programming, which are easily accessible to a learner of functional languages who may not know, or may want to see to see these concepts in action.
+BUS is a fully functional parser combinator library written in a Ocaml. It exists not to replace current parser libraries, but rather to act as a toy parser library for the curious and learning. Relatively small, bus uses advanced concepts in functional programming, which are easily accessible to a learner of functional languages who may not know these concepts, or may want to see these concepts in action.
 
 ### How does it work?
 The best way to illustrate how this library works is via an example. Suppose that I define a simple language as such which describes a simple language consisting of expressions which can be added, and subtracted.
 
-      <expr> := ("+"|"-") <term> ( ("+"|"-") <term> )*
+      <expr>  := ("+"|"-") <term> ( ("+"|"-") <term> )*
       <term>  := ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")+
 
 For those not familiar with [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form), this is a way of representing context-free grammars. ***<expr>*** terms are made of one ***<term>*** or strings of ***<term>*** separated by plus and minus terms. Each ***<num>*** term is simply a string of one or more digits.
