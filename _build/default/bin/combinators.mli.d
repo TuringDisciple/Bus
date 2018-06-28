@@ -1,1 +1,1 @@
-bin/combinators.mli:
+bin/combinators.mli: Parser

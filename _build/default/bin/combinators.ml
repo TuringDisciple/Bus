@@ -53,5 +53,12 @@ let one_of = check << flip elem
 
 (* val not_of : string list -> string parser *)
 let not_of s = check( not << flip elem s )
-(* 
-let new_line = many ( one_of "\n\t" ) *)
+
+(* val carriage_ret : string parser *)
+let carriage_ret = many ( one_of [ "\n"; "\t" ] )
+
+(* val whitespace : () parser *)
+let whitespace = many ( one_of [ "\t";" " ] ) >*> pure ()
+
+(* val tok : string -> string parser *)
+let tok s = string_p s <*< whitespace
