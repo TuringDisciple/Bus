@@ -1,11 +1,9 @@
 # jbuilder build
 # OCAMLPARAM: unset
-$ /usr/local/bin/ocamlc.opt -config > /var/folders/c5/m3zgp8_s4_s151ffj9tj9ddw0000gn/T/jbuildee641c.output
-$ (cd _build/default && /usr/local/bin/ocamldep.opt -modules -intf bin/combinators.mli) > _build/default/bin/combinators.mli.d
-$ (cd _build/default && /usr/local/bin/ocamlc.opt -w -40 -g -bin-annot -I bin/.example.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.example.eobjs/combinators.cmi -c -intf bin/combinators.mli)
+$ /usr/local/bin/ocamlc.opt -config > /var/folders/c5/m3zgp8_s4_s151ffj9tj9ddw0000gn/T/jbuildef040f.output
+$ (cd _build/default && /usr/local/bin/ocamldep.opt -modules -impl bin/example.ml) > _build/default/bin/example.ml.d
 $ (cd _build/default && /usr/local/bin/ocamlc.opt -w -40 -g -bin-annot -I bin/.example.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.example.eobjs/example.cmo -c -impl bin/example.ml)
-> File "bin/example.ml", line 18, characters 52-55:
+> File "bin/example.ml", line 20, characters 46-49:
 > Error: This variant expression is expected to have type parity Parser.parser
 >        The constructor Neg does not belong to type Parser.parser
 [2]
-$ (cd _build/default && /usr/local/bin/ocamlopt.opt -w -40 -g -I bin/.example.eobjs -I lib/.lib.objs -no-alias-deps -o bin/.example.eobjs/combinators.cmx -c -impl bin/combinators.ml)

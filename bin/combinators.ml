@@ -62,3 +62,8 @@ let whitespace = many ( one_of [ "\t";" " ] ) >*> pure ()
 
 (* val tok : string -> string parser *)
 let tok s = string_p s <*< whitespace
+
+(* val number : int parser *)
+let number =
+   ( some ( one_of ["0";"1";"2";"3";"4";"5";"6";"7";"8";"9"] )
+   >>= return << read_char ) <*< whitespace

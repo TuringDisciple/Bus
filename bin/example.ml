@@ -5,6 +5,8 @@ open! Parser.ParserApp
 open! Parser.ParserAlt
 open! Parser.ParserMonad
 
+module Combi = Combinators
+
 (*
  * <expr>  := ("+"|"-") <term> ( ("+"|"-") <term> )*
  * <term>  := ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")+
@@ -15,4 +17,6 @@ type term    = Term of int
 type expr_op = Add of term | Minus of term
 type expr    = Expr of parity * term * expr_op list
 
-let parity = Pos <$ ( Combinators.char_s "+"  ) <|> Neg <$ ( Combinators.char_s "-" )
+let parity : parity parser  = ( Pos <$ ( char_s "+"  ) ) <|> ( Neg <$ ( char_s "-" ) )
+
+let term : term parser      = Term <$> number 

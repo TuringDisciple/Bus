@@ -9,3 +9,4 @@ val char_s : string -> string parser
 val string_p : string -> string parser
 val one_of : string list -> string parser
 val not_of : string list -> string parser
+val number : int parser

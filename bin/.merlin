@@ -1,5 +1,5 @@
-B ../_build/default/bin/.example.eobjs
-B ../_build/default/lib/.lib.objs
+B ../../_build/default/ocaml-parse/bin/.example.eobjs
+B ../../_build/default/ocaml-parse/lib/.lib.objs
 FLG -w -40
 S .
 S ../lib

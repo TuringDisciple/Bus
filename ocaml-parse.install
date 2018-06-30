@@ -5,6 +5,3 @@ lib: [
 bin: [
   "_build/install/default/bin/Bus" {"Bus"}
 ]
-doc: [
-  "_build/install/default/doc/ocaml-parse/README.md"
-]
