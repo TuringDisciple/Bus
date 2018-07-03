@@ -3,4 +3,4 @@
 (executable
   ((name example)                 ; The name of your entry file, minus the .ml
    (public_name Bus) ; Whatever you like, as far as I can tell
-   (libraries (lib))))         ; Express a dependency on the "lib" module
+   (libraries (bus))))         ; Express a dependency on the "lib" module

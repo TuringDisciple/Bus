@@ -15,7 +15,7 @@ type term    = Term of int
 type expr_op = Add of term | Minus of term
 type expr    = Expr of parity * term * expr_op list
 
-let parity_p : parity parser=
+let parity_p : parity parser =
     ( Pos <$ ( char_s "+"  ) ) <|> ( Neg <$ ( char_s "-" ) )
 <|> pure Pos
 

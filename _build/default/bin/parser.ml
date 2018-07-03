@@ -153,7 +153,7 @@ module ParserApp : ( Applicative with type 'a f := 'a parser ) = struct
    let (<*<) px py = const <$> px <*> py
    let (>*>) px py = id <$ px <*> py
    let (<:>) x xs  = (+:) <$> x <*> xs
-   let (<+>)  x xs = (++) <$> x <*> xs
+   let (<+>) x xs  = (++) <$> x <*> xs
 end
 
 (* Alternative
@@ -165,6 +165,7 @@ module type Alternative = sig
    val (<|>) : 'a f -> 'a f -> 'a f
    val some  : 'a f -> ('a list) f
    val many  : 'a f -> ('a list) f
+   val some_s: string parser -> string parser
 end
 
 module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
@@ -176,6 +177,7 @@ module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
    (* Derived combi *)
    let rec some px = px <:> some px <|> empty
    let     many px = some px <|> empty
+   let rec some_s px = px <+> some_s px <|> empty
 end
 
 (* Monad
@@ -198,3 +200,5 @@ module ParserMonad : ( Monad with type 'a f := 'a parser)  = struct
                match f <|x with Parser px -> px <|ss)
             ( px <|s ) )
 end
+
+let parse ( s : string ) ( Parser px ) = px s
