@@ -70,6 +70,7 @@ module type Alternative = sig
    val (<|>) : 'a f -> 'a f -> 'a f
    val some  : 'a f -> ('a list) f
    val many  : 'a f -> ('a list) f
+   val some_s: string parser -> string parser
 end
 
 module ParserAlt : sig
@@ -77,6 +78,7 @@ module ParserAlt : sig
    val (<|>) : 'a parser -> 'a parser -> 'a parser
    val some  : 'a parser -> ('a list) parser
    val many  : 'a parser -> ('a list) parser
+   val some_s: string parser -> string parser
 end
 
 (* MONAD *)
