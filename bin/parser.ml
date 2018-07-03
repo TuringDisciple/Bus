@@ -64,6 +64,9 @@ let (+:) x l = x :: l
 let (++) s1 s2 = s1 ^ s2
 
 let elem = List.mem
+
+let lift (Parser px ) s = px s
+
 (* =========================================================================== *)
 
 (* Characters aren't easily compatible with strings, so I'm treating all chars as
@@ -121,8 +124,11 @@ module ParserFunctor : ( Functor with type 'a f := 'a parser ) = struct
             ( px <|s ) )
    let (<$>) = fmap
    (* Derived combi  *)
-   let (<$) a = function
-      Parser _ -> Parser(fun s -> [ (s, a) ])
+   let (<$) x ( Parser px ) = Parser(
+      fun s ->
+         List.map
+            ( fun pair -> let (s , y) = pair in (s, x) )
+            ( px s ))
 end
 
 (* Applicative
@@ -175,9 +181,20 @@ module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
       Parser( fun s -> List.append ( px <|s ) ( py <|s ) )
 
    (* Derived combi *)
-   let rec some (Parser px)  =  px <:> some px <|> empty
-   let     many px   = some px <|> empty
-   let rec some_s px = px <+> some_s px <|> empty
+   let rec some px =
+      Parser( fun s ->
+         let p = lift px in
+         match p s with
+         | [] -> []
+         | _  -> lift ( px <:> some px <|> empty ) s)
+
+   let many px = some px <|> empty
+   let rec some_s px =
+      Parser( fun s ->
+         let p = lift px in
+         match p s with
+         | [] -> []
+         | _  -> lift ( px <+> some_s px <|> empty ) s)
 end
 
 (* Monad
@@ -201,7 +218,7 @@ module ParserMonad : ( Monad with type 'a f := 'a parser)  = struct
             ( px <|s ) )
 end
 
-let parse ( s : string ) ( Parser px ) = px s
+let parse ( Parser px ) ( s : string ) = px s
 
 (**********************************************)
 open ParserMonad
@@ -246,14 +263,13 @@ type expr_op = Add of term | Minus of term
 type expr    = Expr of parity * term * expr_op list
 
 let parity_p : parity parser =
-    ( Pos <$ ( char_s "+"  ) ) <|> ( Neg <$ ( char_s "-" ) )
-<|> pure Pos
+    ( Pos <$ ( tok "+"  ) ) <|> ( Neg <$ ( tok "-" ) ) <|> pure Pos
 
 let term_p : term parser = ( fun x -> Term x ) <$> number
 
 let expr_op_p : expr_op parser =
-   ( ( fun t -> Add t )   <$ char_s "+" <*> term_p )
-<|>( ( fun t -> Minus t ) <$ char_s "-" <*> term_p )
+   ( ( fun t -> Add t )   <$ tok "+" <*> term_p )
+<|>( ( fun t -> Minus t ) <$ tok "-" <*> term_p )
 
-let expr_p : expr parser =
-   ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
+(* let expr_p : expr parser =
+   ( fun p t eop -> Expr (p, t, eop) ) <$> ( parity_p <*> ( term_p <*> many expr_op_p )) *)

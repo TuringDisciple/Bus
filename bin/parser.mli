@@ -19,7 +19,7 @@ val tail    : string -> string
 val read_char   : string parser
 val parse_maybe : ( 'a -> (string * 'a) list ) -> 'a  -> 'a maybe
 
-val parse : string -> 'a parser -> ( string * 'a ) list
+val parse : 'a parser -> string -> ( string * 'a ) list
 
 (* MODULAR TYPECLASSES *)
 
@@ -110,7 +110,7 @@ type term    = Term of int
 type expr_op = Add of term | Minus of term
 type expr    = Expr of parity * term * expr_op list
 
-val parity_p : parity parser 
+val parity_p : parity parser
 
 val term_p : term parser
 
