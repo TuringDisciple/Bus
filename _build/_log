@@ -1,0 +1,18 @@
+### Starting build.
+Backtrace:
+                      - Failed to build the target example.cma
+                          - Building example.cma:
+                              - Failed to build all of these:
+                                  - Building example.cmo:
+                                      - Failed to build all of these:
+                                          - Building example.ml:
+                                              - Failed to build all of these:
+                                                  - Building example.mly
+                                                  - Building example.mll
+                                          - Building example.mli:
+                                              - Building example.mly
+                                          - Building example.mlpack
+                                          - Building example.mli:
+                                              - Building example.mly
+                                  - Building example.mllib
+# Compilation unsuccessful.

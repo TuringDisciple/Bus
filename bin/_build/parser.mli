@@ -19,8 +19,6 @@ val tail    : string -> string
 val read_char   : string parser
 val parse_maybe : ( 'a -> (string * 'a) list ) -> 'a  -> 'a maybe
 
-val parse : string -> 'a parser -> ( string * 'a ) list 
-
 (* MODULAR TYPECLASSES *)
 
 (* FUNCTOR *)

@@ -200,5 +200,3 @@ module ParserMonad : ( Monad with type 'a f := 'a parser)  = struct
                match f <|x with Parser px -> px <|ss)
             ( px <|s ) )
 end
-
-let parse ( s : string ) ( Parser px ) = px s
