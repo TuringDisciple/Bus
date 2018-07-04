@@ -171,6 +171,7 @@ module type Alternative = sig
    val some  : 'a f -> ('a list) f
    val many  : 'a f -> ('a list) f
    val some_s: string parser -> string parser
+   val many_s: string parser -> string parser
 end
 
 module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
@@ -194,6 +195,7 @@ module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
          match p s with
          | [] -> []
          | _  -> parse ( px <+> some_s px <|> empty ) s)
+   let many_s px = some_s px <|> empty
 end
 
 (* Monad
@@ -246,12 +248,12 @@ let carriage_ret = many ( one_of [ "\n"; "\t" ] )
 let whitespace = many ( one_of [ "\t";" " ] ) >*> pure ()
 
 (* val tok : string -> string parser *)
-let tok s = string_p s <*< whitespace
+let tok s = string_p s (*<*< whitespace*)
 
 (* val number : int parser *)
 let number =
    ( ( some_s ( one_of ["0";"1";"2";"3";"4";"5";"6";"7";"8";"9"] ) )
-             >>= ( return << int_of_string ) ) <*< whitespace
+             >>= ( return << int_of_string ) ) (*<*< whitespace*)
 
 (**********************************************)
 type parity  = Pos | Neg
@@ -270,4 +272,4 @@ let expr_op_p : expr_op parser =
 
 let expr_p : expr parser =
    ( fun p t eop ->
-      Expr (p, t, eop) ) <$>  parity_p <*>  term_p <*> many expr_op_p 
+      Expr (p, t, eop) ) <$>  parity_p <*>  term_p <*> many expr_op_p
