@@ -84,7 +84,7 @@ let tail s =
 let parse_maybe px s =
    match px s with
    | []          -> Nothing
-   | p::ps -> let (_, x) = p in Just x
+   | p::_ -> let (_, x) = p in Just x
 
 (* Here's a parser that simply tries to get a character from an input string
  * val read_chars : char parser *)
@@ -126,7 +126,7 @@ module ParserFunctor : ( Functor with type 'a f := 'a parser ) = struct
    let (<$) x ( Parser px ) = Parser(
       fun s ->
          List.map
-            ( fun pair -> let (s , y) = pair in (s, x) )
+            ( fun pair -> let (s , _) = pair in (s, x) )
             ( px s ))
 end
 

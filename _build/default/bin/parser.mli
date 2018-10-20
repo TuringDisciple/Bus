@@ -99,23 +99,3 @@ module ParserMonad : sig
 end
 
 
-(***************************************)
-val check : ( string -> bool ) -> string parser
-val char_s : string -> string parser
-val string_p : string -> string parser
-val one_of : string list -> string parser
-val not_of : string list -> string parser
-val number : int parser
-
-type parity  = Pos | Neg
-type term    = Term of int
-type expr_op = Add of term | Minus of term
-type expr    = Expr of parity * term * expr_op list
-
-val parity_p : parity parser
-
-val term_p : term parser
-
-val expr_op_p : expr_op parser
-
-val expr_p : expr parser

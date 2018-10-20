@@ -27,3 +27,5 @@ let expr_op_p : expr_op parser =
 
 let expr_p : expr parser =
    ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
+
+(* let%test _ = parse "+" = pure Pos *)

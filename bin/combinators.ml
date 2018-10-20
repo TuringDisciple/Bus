@@ -68,7 +68,7 @@ let number =
    ( ( some_s ( one_of ["0";"1";"2";"3";"4";"5";"6";"7";"8";"9"] ) )
              >>= ( return << int_of_string ) ) <*< whitespace
 
-(* Testing for the combinators based on toy language *)
+(* Testing for the combinators based on toy language
 type parity  = Pos | Neg
 type term    = Term of int
 type expr_op = Add of term | Minus of term
@@ -86,3 +86,5 @@ let expr_op_p : expr_op parser =
 
 let expr_p : expr parser =
    ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
+
+let%test _ = parse "+" parity = pure Pos *)

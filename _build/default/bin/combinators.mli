@@ -10,3 +10,6 @@ val string_p : string -> string parser
 val one_of : string list -> string parser
 val not_of : string list -> string parser
 val number : int parser
+val tok    : string -> string parser
+(* v//al number : string -> string parser *)
+val carriage_ret : string parser 
