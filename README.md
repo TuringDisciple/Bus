@@ -64,3 +64,9 @@ And the following combinators for the remaining constructors.
 Example usage of these combinators can be seen
 
       parse "+123-45" expr_p;;
+
+### To build 
+This requires the installation of jbuilder. Instructions to build can be found [here](https://github.com/andyli/jbuilder)
+
+
+### To Run

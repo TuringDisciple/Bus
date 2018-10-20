@@ -1,5 +1,7 @@
 (jbuild_version 1)
 
 (library
-  ((name bus)                 ; The name of your entry file, minus the .ml
-   (libraries ())))         ; Express a dependency on the "lib" module
+    ((name bus)
+    (preprocess (pps (ppx_inline_test)))
+    (inline_tests)
+    (libraries ())))
