@@ -67,10 +67,19 @@ let elem = List.mem
 
 let parse ( Parser px ) ( s : string ) = px s
 
-let rec print_parse = 
+let my_print_string = function "" -> print_string "\"\"" | s -> print_string s
+
+let rec print_parse printer = 
       function
       [] -> print_string "end\n"; ()
-      | e::l -> let (s, x ) = e in print_string s; print_string "\n"; print_parse l
+      | e::l -> let (s, x ) = e in 
+            my_print_string "(";
+            printer x;
+            my_print_string "," ;
+            my_print_string s; 
+            my_print_string ")";
+            my_print_string "\n"; 
+            print_parse printer l
 
 (* =========================================================================== *)
 

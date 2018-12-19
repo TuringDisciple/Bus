@@ -21,7 +21,7 @@ val parse_maybe : ( 'a -> (string * 'a) list ) -> 'a  -> 'a maybe
 
 val parse : 'a parser -> string -> ( string * 'a ) list
 
-val print_parse: (string * 'a) list -> unit
+val print_parse: ('a -> unit) -> (string * 'a) list -> unit 
 (* MODULAR TYPECLASSES *)
 
 (* FUNCTOR *)

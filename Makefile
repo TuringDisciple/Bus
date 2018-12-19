@@ -1,9 +1,9 @@
 all: parser.cmi combinators.cmi combinators.cmo example.cmo a.out
 
-parser.cmi: parser.ml
+parser.cmi: parser.ml parser.mli
 	ocamlc -o parser parser.mli
 
-combinators.cmi: combinators.mli
+combinators.cmi: combinators.mli parser.mli
 	ocamlc -o combinators combinators.mli
 
 combinators.cmo: parser.ml combinators.ml
