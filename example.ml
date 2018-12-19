@@ -28,6 +28,7 @@ let expr_op_p : expr_op parser =
 let expr_p : expr parser =
    ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
 
-let main () = print_parse ( parse  term_p "+ 100 - 25 ")
+// TODO: Testing
+let main () = print_parse ( parse  parity_p "+ - - - +  ")
 
 let _ = main ()
