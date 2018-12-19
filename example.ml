@@ -10,10 +10,10 @@ open! Parser.ParserMonad
  * <term>  := ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")+
 *)
 
-type parity  = Pos | Neg [@@deriving show]
-type term    = Term of int [@@deriving show]
-type expr_op = Add of term | Minus of term [@@deriving show]
-type expr    = Expr of parity * term * expr_op list [@@deriving show]
+type parity  = Pos | Neg 
+type term    = Term of int 
+type expr_op = Add of term | Minus of term 
+type expr    = Expr of parity * term * expr_op list
 
 let parity_p : parity parser =
     ( Pos <$ ( char_s "+"  ) ) <|> ( Neg <$ ( char_s "-" ) )
@@ -28,6 +28,14 @@ let expr_p : expr parser =
    ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
 
 let print_parity = function Pos -> print_string "Pos" | Neg -> print_string "Neg"
+
+let rec print_term = function (Term x) -> print_string "Term "; print_int x
+
+let rec print_expr_op = function 
+        Add t -> print_string "Add "; print_term t
+      | Minus t -> print_string "Minus "; print_term t
+
+let rec print_expr = function Expr (p, t, exp_li) -> print_parity p; print_term t; List.iter (print_expr_op) (exp_li)
 
 (* TODO: Testimg *)
 let main () = print_parse (print_parity) ( parse  parity_p "-")

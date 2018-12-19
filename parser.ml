@@ -72,7 +72,7 @@ let my_print_string = function "" -> print_string "\"\"" | s -> print_string s
 let rec print_parse printer = 
       function
       [] -> print_string "end\n"; ()
-      | e::l -> let (s, x ) = e in 
+      | e::l -> let (s, x) = e in 
             my_print_string "(";
             printer x;
             my_print_string "," ;

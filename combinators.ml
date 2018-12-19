@@ -31,8 +31,6 @@ open! Parser.ParserApp
 open! Parser.ParserAlt
 open! Parser.ParserMonad
 
-
-
 (* Parser combinators *)
 
 (* val check : ( string -> bool ) -> string parser *)
