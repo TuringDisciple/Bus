@@ -66,6 +66,12 @@ let (++) s1 s2 = s1 ^ s2
 let elem = List.mem
 
 let parse ( Parser px ) ( s : string ) = px s
+
+let rec print_parse = 
+      function
+      [] -> print_string "end\n"; ()
+      | e::l -> let (s, x ) = e in print_string s; print_string "\n"; print_parse l
+
 (* =========================================================================== *)
 
 (* Characters aren't easily compatible with strings, so I'm treating all chars as

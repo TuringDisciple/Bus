@@ -22,10 +22,12 @@ let parity_p : parity parser =
 let term_p : term parser = ( fun x -> Term x ) <$> number
 
 let expr_op_p : expr_op parser =
-   ( ( fun t -> Add t )   <$ char_s "+" <*> term_p )
+   ( ( fun t -> Add t )   <$ char_s "+" <*> term_p  )
 <|>( ( fun t -> Minus t ) <$ char_s "-" <*> term_p )
 
 let expr_p : expr parser =
    ( fun p t eop -> Expr (p, t, eop) ) <$> parity_p <*> term_p <*> many expr_op_p
 
-(* let%test _ = parse "+" = pure Pos *)
+let main () = print_parse ( parse  term_p "+ 100 - 25 ")
+
+let _ = main ()
