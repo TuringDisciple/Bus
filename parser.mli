@@ -15,6 +15,7 @@ val (+:)    : 'a  -> 'a list -> 'a list
 val chr_str : char -> string
 val elem    : 'a -> 'a list -> bool
 val tail    : string -> string
+val head    : string -> string
 
 val read_char   : string parser
 val parse_maybe : ( 'a -> (string * 'a) list ) -> 'a  -> 'a maybe

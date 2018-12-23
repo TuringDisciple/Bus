@@ -45,10 +45,10 @@ let rec string_p s =
    | ""    -> pure ""
    | _     -> char_s ( chr_str <| s.[0] ) <+> ( string_p <| tail s )
 
-let item  = Parser(fun t -> match t with [] -> [] | t:ts ) 
+let item  = Parser(fun t -> match t with "" -> [] | s -> let ts = tail s in let t = head s in [(ts, t )] ) 
 
-let satisfy p =  
-let rec one_of  = 
+let satisfy p =  item >>= (fun t -> if p t then pure t else empty)
+let rec one_of  = satisfy << flip elem
 let not_of s = check( not << flip elem s )
 
 

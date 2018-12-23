@@ -94,7 +94,10 @@ let tail s =
    | _ when String.length s <= 1  -> ""
    | _                            ->  ( String.sub s 1 ) <| String.length s - 1
 
-
+let head s = 
+      match s with 
+      | _ when String.length s <= 0 -> ""
+      | _                           -> chr_str s.[0]
 (* val parse_maybe : ( 'a -> (string * 'a) list ) -> 'a  -> 'a maybe *)
 let parse_maybe px s =
    match px s with
@@ -224,13 +227,15 @@ module type Monad = sig
 end
 
 module ParserMonad : ( Monad with type 'a f := 'a parser)  = struct
-   include ParserAlt
-   let return = pure
-   let (>>=) ( Parser px ) f =
-      Parser( fun s ->
-         List.flatten <|List.map
-            ( fun p -> let (ss, x) = p in
-               match f <|x with Parser px -> px <|ss)
-            ( px <|s ) )
+      include ParserAlt
+      let return = pure
+      let (>>=) ( Parser px ) f =
+            Parser( fun s ->
+            List.flatten <|List.map
+                  ( 
+                        fun p -> let (ss, x) = p in
+                              match f <|x with Parser px -> px <|ss
+                  )
+                  ( px <|s ) )
 end
 
