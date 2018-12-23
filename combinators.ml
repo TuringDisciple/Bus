@@ -59,10 +59,10 @@ let not_of s = check( not << flip elem s )
 let carriage_ret = many_s ( one_of [ "\n"; "\t" ] )
 
 (* Parse any whitespace in input *)
-let whitespace = many ( one_of [ "\t";" " ] ) >*> pure ()
+let whitespace = many ( one_of [ "\t";" " ] ) >*> pure () (* TODO: Find out why it doesn't work *)
 
 (* Seperate input out by whitespace *)
-let rec tok s  = string_p s <*< whitespace
+let rec tok s  = string_p s (*<*< whitespace*)
 
 let int_list_10 = ["0"; "1"; "2"; "3"; "4"; "5"; "6"; "7"; "8"; "9"]
-let number = ((some_s (one_of int_list_10)) >>= (return << int_of_string)) <*< whitespace
+let number = ( (*many_s*) (one_of int_list_10)) >>= (return << int_of_string) (* <*< whitespace *) (* TODO:adding many doesn't work *)
