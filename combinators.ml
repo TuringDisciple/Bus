@@ -45,18 +45,24 @@ let rec string_p s =
    | ""    -> pure ""
    | _     -> char_s ( chr_str <| s.[0] ) <+> ( string_p <| tail s )
 
+(* Obtain the head of some sort of string*) 
 let item  = Parser(fun t -> match t with "" -> [] | s -> let ts = tail s in let t = head s in [(ts, t )] ) 
 
+(* Return a parsed value if it satisfies condition *)
 let satisfy p =  item >>= (fun t -> if p t then pure t else empty)
-let rec one_of  = satisfy << flip elem
+
+(* Check if any elements within a list satisfy a condition and return that item wrapped*)
+let one_of  = satisfy << flip elem
 let not_of s = check( not << flip elem s )
 
-
+(* Parse any carriage return characters within an input *)
 let carriage_ret = many_s ( one_of [ "\n"; "\t" ] )
 
+(* Parse any whitespace in input *)
 let whitespace = many ( one_of [ "\t";" " ] ) >*> pure ()
 
+(* Seperate input out by whitespace *)
+let rec tok s  = string_p s <*< whitespace
 
-let tok s =
-
-let number = 
+let int_list_10 = ["0"; "1"; "2"; "3"; "4"; "5"; "6"; "7"; "8"; "9"]
+let number = ((some_s (one_of int_list_10)) >>= (return << int_of_string)) <*< whitespace

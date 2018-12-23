@@ -136,9 +136,9 @@ end
 module ParserFunctor : ( Functor with type 'a f := 'a parser ) = struct
       let fmap g = function
             Parser px -> Parser( fun s ->
-            List.map
-                  ( fun pair -> let (ts, x) = pair in (ts, g <|x) )
-                  ( px <|s ) )
+                  List.map
+                        ( fun pair -> let (ts, x) = pair in (ts, g <|x) )
+                        ( px <|s ) )
       let (<$>) = fmap
       (* Derived combi  *)
       let (<$) x ( Parser px ) = Parser(
@@ -201,18 +201,18 @@ module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
       (* Derived combi *)
       let rec some px =
             Parser( fun s ->
-            let p = parse px in
-            match p s with
-            | [] -> []
-            | _  -> parse ( px <:> some px <|> empty ) s)
+                  let p = parse px in
+                  match p s with
+                  | [] -> []
+                  | _  -> parse ( px <:> some px <|> empty ) s)
 
       let many px = some px <|> empty
       let rec some_s px =
             Parser( fun s ->
             let p = parse px in
-            match p s with
-            | [] -> []
-            | _  -> parse ( px <+> some_s px <|> empty ) s)
+                  match p s with
+                  | [] -> []
+                  | _  -> parse ( px <+> some_s px <|> empty ) s)
       let many_s px = some_s px <|> empty
 end
 

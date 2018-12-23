@@ -37,10 +37,12 @@ let rec print_expr_op = function
 
 let rec print_expr = function Expr (p, t, exp_li) -> print_parity p; print_term t; List.iter (print_expr_op) (exp_li)
 
-let parse_parity = print_string "example: \"+\"\n "; print_parse (print_parity) (parse parity_p "+")
+let parse_parity_pos = print_string "example: \"+\"\n "; print_parse (print_parity) (parse parity_p "+")
+let parse_parity_neg =  print_string "example: \"-\"\n "; print_parse (print_parity) (parse parity_p "-")
+let parse_parity_list = print_string "example: \"+-++-\"\n "; print_parse (print_parity) (parse parity_p "+-++-")
 let parse_term_ex = print_string "example: \"1234567890\"\n"; print_parse (print_term) (parse term_p "1234567890")
 
 (* TODO: Testimg *)
-let main () = parse_parity; parse_term_ex
+let main () = parse_parity_pos; parse_parity_neg; parse_parity_list; parse_term_ex
 
 let _ = main ()
