@@ -199,20 +199,9 @@ module ParserAlt : ( Alternative with type 'a f := 'a parser ) = struct
             Parser( fun s -> List.append ( px <|s ) ( py <|s ) )
 
       (* Derived combi *)
-      let rec some px =
-            Parser( fun s ->
-                  let p = parse px in
-                  match p s with
-                  | [] -> []
-                  | _  -> parse ( px <:> some px <|> empty ) s)
-
+      let rec some px = px <:>  some px <|> empty
       let many px = some px <|> empty
-      let rec some_s px =
-            Parser( fun s ->
-            let p = parse px in
-                  match p s with
-                  | [] -> []
-                  | _  -> parse ( px <+> some_s px <|> empty ) s)
+      let rec some_s px = px <+> some_s px <|> empty
       let many_s px = some_s px <|> empty
 end
 
